@@ -4,8 +4,9 @@ import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.services.PetStoreService;
-import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.File;
 
 import static org.junit.Assert.*;
 
