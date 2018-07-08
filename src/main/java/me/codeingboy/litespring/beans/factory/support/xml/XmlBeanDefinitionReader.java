@@ -1,41 +1,64 @@
-package me.codeingboy.litespring.utils;
+package me.codeingboy.litespring.beans.factory.support.xml;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import me.codeingboy.litespring.beans.BeanDefinition;
+import me.codeingboy.litespring.beans.BeanDefinitionReadException;
+import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
+import me.codeingboy.litespring.beans.support.GenericBeanDefinition;
+import me.codeingboy.litespring.utils.ClassUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
- * A parser for parser XML bean config file
+ * A parser for parsing XML bean config file
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  */
-public class BeanConfigXmlParser {
+public class XmlBeanDefinitionReader {
+
     private final static String BEAN_ELEMENT = "bean";
 
     private final static String ID_ATTRIBUTE = "id";
     private final static String CLASS_ATTRIBUTE = "class";
 
     private List<BeanElement> beanElements = new ArrayList<>();
+    private BeanDefinitionRegistry registry;
 
-    public BeanConfigXmlParser(String fileName) throws FileNotFoundException, DocumentException {
-        parse(fileName);
+    /**
+     * Construct a reader
+     *
+     * @param registry factory to be register definitions
+     */
+    public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
+        this.registry = registry;
     }
 
-    public List<BeanElement> getBeanElements() {
-        return beanElements;
+    /**
+     * Register bean definitions to factory
+     *
+     * @param fileName bean definition file name
+     */
+    public void registerBeanDefinitions(String fileName) {
+        try {
+            parseXmlBeanDefinitionFile(fileName);
+            for (XmlBeanDefinitionReader.BeanElement element : beanElements) {
+                BeanDefinition definition = new GenericBeanDefinition(element.getClassName());
+                registry.registerBeanDefinition(element.getId(), definition);
+            }
+        } catch (FileNotFoundException | DocumentException e) {
+            throw new BeanDefinitionReadException("Exception occurred while reading bean definition xml", e);
+        }
     }
 
-    private void parse(String fileName) throws FileNotFoundException, DocumentException {
+    private void parseXmlBeanDefinitionFile(String fileName) throws FileNotFoundException, DocumentException {
         ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(fileName);
         if (inputStream == null) {
@@ -67,6 +90,7 @@ public class BeanConfigXmlParser {
     }
 
     public static class BeanElement {
+
         private String id;
         private String className;
 
