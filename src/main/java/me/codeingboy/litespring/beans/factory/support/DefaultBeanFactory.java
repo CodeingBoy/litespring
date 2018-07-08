@@ -1,6 +1,8 @@
 package me.codeingboy.litespring.beans.factory.support;
 
+import me.codeingboy.litespring.beans.BeanCreationException;
 import me.codeingboy.litespring.beans.BeanDefinition;
+import me.codeingboy.litespring.beans.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
 import me.codeingboy.litespring.beans.support.GenericBeanDefinition;
 import me.codeingboy.litespring.utils.BeanConfigXmlParser;
@@ -43,7 +45,7 @@ public class DefaultBeanFactory implements BeanFactory {
                 definitionMap.put(element.getId(), definition);
             }
         } catch (FileNotFoundException | DocumentException e) {
-            e.printStackTrace();
+            throw new BeanDefinitionReadException("Exception occurred while reading bean definition xml", e);
         }
 
     }
@@ -52,23 +54,15 @@ public class DefaultBeanFactory implements BeanFactory {
     public Object getBean(String beanId) {
         BeanDefinition definition = getBeanDefinition(beanId);
         if (definition == null) {
-            return null;
+            throw new BeanCreationException("Bean definition not found");
         }
         ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-        Class<?> clazz = null;
         try {
-            clazz = classLoader.loadClass(definition.getClassName());
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-        try {
+            Class<?> clazz = classLoader.loadClass(definition.getClassName());
             return clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new BeanCreationException("Exception occurred while creating bean " + beanId + "'s instance", e);
         }
-        return null;
     }
 
     @Override

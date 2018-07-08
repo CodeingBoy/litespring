@@ -1,6 +1,8 @@
 package me.codeingboy.litespring;
 
+import me.codeingboy.litespring.beans.BeanCreationException;
 import me.codeingboy.litespring.beans.BeanDefinition;
+import me.codeingboy.litespring.beans.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.services.PetStoreService;
@@ -31,5 +33,26 @@ public class BeanFactoryTest {
         assertTrue(bean instanceof PetStoreService);
 
         PetStoreService petStoreService = (PetStoreService) bean;
+    }
+
+    @Test(expected = BeanDefinitionReadException.class)
+    public void fileNotExistsTest() {
+        BeanFactory factory = new DefaultBeanFactory("NotExists.xml");
+    }
+
+    @Test
+    public void beanDefinitionNotExistsTest() {
+        BeanFactory factory = new DefaultBeanFactory("petstore-v1.xml");
+        BeanDefinition shouldBeNull = factory.getBeanDefinition("notExists");
+        assertNull(shouldBeNull);
+    }
+
+    @Test(expected = BeanCreationException.class)
+    public void notExistsBeanClassTest() {
+        BeanFactory factory = new DefaultBeanFactory("petstore-v1.xml");
+        BeanDefinition beanDefinition = factory.getBeanDefinition("invalidBean");
+        assertNotNull(beanDefinition);
+
+        Object shouldThrowException = factory.getBean("invalidBean");
     }
 }
