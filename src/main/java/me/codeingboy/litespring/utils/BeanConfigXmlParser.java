@@ -20,6 +20,8 @@ import java.util.List;
  * @version 1
  */
 public class BeanConfigXmlParser {
+    private final static String BEAN_ELEMENT = "bean";
+
     private final static String ID_ATTRIBUTE = "id";
     private final static String CLASS_ATTRIBUTE = "class";
 
@@ -34,7 +36,12 @@ public class BeanConfigXmlParser {
     }
 
     private void parse(String fileName) throws FileNotFoundException, DocumentException {
-        InputStream inputStream = new FileInputStream(fileName);
+        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+        if (inputStream == null) {
+            throw new FileNotFoundException();
+        }
+
         SAXReader saxReader = new SAXReader();
         Document document = saxReader.read(inputStream);
         Element rootElement = document.getRootElement();
@@ -42,7 +49,7 @@ public class BeanConfigXmlParser {
     }
 
     private void parseBeanElements(Element root) {
-        Iterator<Element> iterator = root.elementIterator("bean");
+        Iterator<Element> iterator = root.elementIterator(BEAN_ELEMENT);
         Element currentElement;
         while (iterator.hasNext()) {
             currentElement = iterator.next();
