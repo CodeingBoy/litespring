@@ -4,6 +4,7 @@ import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
 import me.codeingboy.litespring.beans.support.GenericBeanDefinition;
 import me.codeingboy.litespring.utils.BeanConfigXmlParser;
+import me.codeingboy.litespring.utils.ClassUtils;
 import org.dom4j.DocumentException;
 
 import java.io.FileNotFoundException;
@@ -49,6 +50,24 @@ public class DefaultBeanFactory implements BeanFactory {
 
     @Override
     public Object getBean(String beanId) {
+        BeanDefinition definition = getBeanDefinition(beanId);
+        if (definition == null) {
+            return null;
+        }
+        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+        Class<?> clazz = null;
+        try {
+            clazz = classLoader.loadClass(definition.getClassName());
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
