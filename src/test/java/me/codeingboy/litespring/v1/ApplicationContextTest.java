@@ -13,6 +13,7 @@ import org.junit.Test;
  * @version 1
  */
 public class ApplicationContextTest {
+
     private final static String BEAN_ID_PET_STORE_SERVICE = "petStoreService";
 
     @Test

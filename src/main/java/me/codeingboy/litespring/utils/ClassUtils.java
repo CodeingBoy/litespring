@@ -17,8 +17,7 @@
 package me.codeingboy.litespring.utils;
 
 /**
- * Miscellaneous class utility methods.
- * Mainly for internal use within the framework.
+ * Miscellaneous class utility methods. Mainly for internal use within the framework.
  *
  * @author Juergen Hoeller
  * @author Keith Donald

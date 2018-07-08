@@ -21,7 +21,7 @@ public interface BeanDefinitionRegistry {
     /**
      * Register bean definition to factory
      *
-     * @param beanId bean's id
+     * @param beanId         bean's id
      * @param beanDefinition bean's definition
      */
     void registerBeanDefinition(String beanId, BeanDefinition beanDefinition);

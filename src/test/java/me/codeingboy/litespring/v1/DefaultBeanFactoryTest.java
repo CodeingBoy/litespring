@@ -1,10 +1,5 @@
 package me.codeingboy.litespring.v1;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
@@ -14,6 +9,8 @@ import me.codeingboy.litespring.services.PetStoreService;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 /**
  * Test for {@link DefaultBeanFactory}
  *
@@ -21,6 +18,7 @@ import org.junit.Test;
  * @version 2
  */
 public class DefaultBeanFactoryTest {
+
     private final static String BEAN_ID_PET_STORE_SERVICE = "petStoreService";
 
     private DefaultBeanFactory factory;

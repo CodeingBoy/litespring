@@ -9,6 +9,7 @@ import me.codeingboy.litespring.beans.BeanDefinition;
  * @version 1
  */
 public class GenericBeanDefinition implements BeanDefinition {
+
     private String className;
 
     public GenericBeanDefinition(String className) {

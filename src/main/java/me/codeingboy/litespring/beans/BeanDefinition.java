@@ -7,8 +7,10 @@ package me.codeingboy.litespring.beans;
  * @version 1
  */
 public interface BeanDefinition {
+
     /**
      * Get bean's class name
+     *
      * @return bean's class name
      */
     String getClassName();

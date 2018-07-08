@@ -7,4 +7,5 @@ package me.codeingboy.litespring.services;
  * @version 1
  */
 public class PetStoreService {
+
 }
