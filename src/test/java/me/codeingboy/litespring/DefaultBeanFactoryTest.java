@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import me.codeingboy.litespring.beans.BeanCreationException;
+import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.BeanDefinition;
-import me.codeingboy.litespring.beans.BeanDefinitionReadException;
+import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.beans.factory.support.xml.XmlBeanDefinitionReader;
 import me.codeingboy.litespring.services.PetStoreService;

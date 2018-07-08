@@ -1,4 +1,6 @@
-package me.codeingboy.litespring.beans;
+package me.codeingboy.litespring.beans.factory;
+
+import me.codeingboy.litespring.beans.BeansException;
 
 /**
  * Exception occurred while creating bean instance

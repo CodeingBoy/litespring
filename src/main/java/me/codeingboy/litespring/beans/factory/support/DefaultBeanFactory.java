@@ -1,7 +1,7 @@
 package me.codeingboy.litespring.beans.factory.support;
 
-import me.codeingboy.litespring.beans.BeanCreationException;
 import me.codeingboy.litespring.beans.BeanDefinition;
+import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
 import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
 import me.codeingboy.litespring.utils.ClassUtils;

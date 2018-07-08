@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import me.codeingboy.litespring.beans.BeanDefinition;
-import me.codeingboy.litespring.beans.BeanDefinitionReadException;
+import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
 import me.codeingboy.litespring.beans.support.GenericBeanDefinition;
 import me.codeingboy.litespring.utils.ClassUtils;
