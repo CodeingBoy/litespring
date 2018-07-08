@@ -1,4 +1,4 @@
-package me.codeingboy.litespring;
+package me.codeingboy.litespring.v1;
 
 import me.codeingboy.litespring.context.ApplicationContext;
 import me.codeingboy.litespring.context.ClassPathXmlApplicationContext;
