@@ -1,11 +1,11 @@
-package me.codeingboy.litespring.v1;
+package me.codeingboy.litespring;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * Test suite for v1 tests
+ * Test suite for all tests
  *
  * @author CodeingBoy
  * @version 1
@@ -16,6 +16,6 @@ import org.junit.runners.Suite.SuiteClasses;
         DefaultBeanFactoryTest.class,
         ResourceTest.class
 })
-public class AllV1Tests {
+public class AllTests {
 
 }

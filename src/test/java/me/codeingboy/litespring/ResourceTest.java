@@ -1,4 +1,4 @@
-package me.codeingboy.litespring.v1;
+package me.codeingboy.litespring;
 
 import me.codeingboy.litespring.core.io.ClasspathResource;
 import me.codeingboy.litespring.core.io.FileSystemResource;
