@@ -5,6 +5,8 @@ import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.beans.factory.support.xml.XmlBeanDefinitionReader;
+import me.codeingboy.litespring.core.io.ClasspathResource;
+import me.codeingboy.litespring.core.io.Resource;
 import me.codeingboy.litespring.services.PetStoreService;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +34,8 @@ public class DefaultBeanFactoryTest {
 
     @Test
     public void beanGetTest() {
-        reader.registerBeanDefinitions("petstore-v1.xml");
+        Resource resource = new ClasspathResource("petstore-v1.xml");
+        reader.registerBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PET_STORE_SERVICE);
         assertEquals("me.codeingboy.litespring.services.PetStoreService", beanDefinition.getClassName());
@@ -46,12 +49,14 @@ public class DefaultBeanFactoryTest {
 
     @Test(expected = BeanDefinitionReadException.class)
     public void fileNotExistsTest() {
-        reader.registerBeanDefinitions("NotExists.xml");
+        reader.registerBeanDefinitions(new ClasspathResource("NotExists.xml"));
     }
 
     @Test
     public void beanDefinitionNotExistsTest() {
-        reader.registerBeanDefinitions("petstore-v1.xml");
+        Resource resource = new ClasspathResource("petstore-v1.xml");
+
+        reader.registerBeanDefinitions(resource);
 
         BeanDefinition shouldBeNull = factory.getBeanDefinition("notExists");
         assertNull(shouldBeNull);
@@ -59,7 +64,8 @@ public class DefaultBeanFactoryTest {
 
     @Test(expected = BeanCreationException.class)
     public void notExistsBeanClassTest() {
-        reader.registerBeanDefinitions("petstore-v1.xml");
+        Resource resource = new ClasspathResource("petstore-v1.xml");
+        reader.registerBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition("invalidBean");
         assertNotNull(beanDefinition);

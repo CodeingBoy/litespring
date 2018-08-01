@@ -4,7 +4,7 @@ import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
 import me.codeingboy.litespring.beans.support.GenericBeanDefinition;
-import me.codeingboy.litespring.utils.ClassUtils;
+import me.codeingboy.litespring.core.io.Resource;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -47,9 +47,9 @@ public class XmlBeanDefinitionReader {
      *
      * @param fileName bean definition file name
      */
-    public void registerBeanDefinitions(String fileName) {
+    public void registerBeanDefinitions(Resource resource) {
         try {
-            parseXmlBeanDefinitionFile(fileName);
+            parseXmlBeanDefinitionFile(resource);
             for (XmlBeanDefinitionReader.BeanElement element : beanElements) {
                 BeanDefinition definition = new GenericBeanDefinition(element.getClassName());
                 registry.registerBeanDefinition(element.getId(), definition);
@@ -59,12 +59,8 @@ public class XmlBeanDefinitionReader {
         }
     }
 
-    private void parseXmlBeanDefinitionFile(String fileName) throws FileNotFoundException, DocumentException {
-        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-        if (inputStream == null) {
-            throw new FileNotFoundException();
-        }
+    private void parseXmlBeanDefinitionFile(Resource resource) throws FileNotFoundException, DocumentException {
+        InputStream inputStream = resource.getInputStream();
 
         SAXReader saxReader = new SAXReader();
         Document document = saxReader.read(inputStream);
