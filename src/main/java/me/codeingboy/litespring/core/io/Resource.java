@@ -1,5 +1,6 @@
 package me.codeingboy.litespring.core.io;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -10,7 +11,7 @@ import java.io.InputStream;
  */
 public interface Resource {
 
-    InputStream getInputStream();
+    InputStream getInputStream() throws FileNotFoundException;
 
     String getDescription();
 

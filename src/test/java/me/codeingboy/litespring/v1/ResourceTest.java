@@ -31,7 +31,7 @@ public class ResourceTest {
 
     @Test
     public void fileSystemResourceTest() {
-        Resource resource = new FileSystemResource("./petstore-v1.xml");
+        Resource resource = new FileSystemResource("./src/test/resources/petstore-v1.xml");
         try (InputStream inputStream = resource.getInputStream()) {
             Assert.assertNotNull("input stream should be not null", inputStream);
         } catch (IOException e) {
