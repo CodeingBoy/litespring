@@ -1,7 +1,8 @@
-package me.codeingboy.litespring.context;
+package me.codeingboy.litespring.context.support;
 
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.beans.factory.support.xml.XmlBeanDefinitionReader;
+import me.codeingboy.litespring.context.ApplicationContext;
 import me.codeingboy.litespring.core.io.Resource;
 
 /**

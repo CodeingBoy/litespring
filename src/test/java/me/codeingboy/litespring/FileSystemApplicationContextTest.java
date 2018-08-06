@@ -1,13 +1,13 @@
 package me.codeingboy.litespring;
 
 import me.codeingboy.litespring.context.ApplicationContext;
-import me.codeingboy.litespring.context.FileSystemXmlApplicationContext;
+import me.codeingboy.litespring.context.support.FileSystemXmlApplicationContext;
 import me.codeingboy.litespring.services.PetStoreService;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test for {@link me.codeingboy.litespring.context.FileSystemXmlApplicationContext}
+ * Test for {@link FileSystemXmlApplicationContext}
  *
  * @author CodeingBoy
  * @version 1

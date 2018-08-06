@@ -1,4 +1,4 @@
-package me.codeingboy.litespring.context;
+package me.codeingboy.litespring.context.support;
 
 import me.codeingboy.litespring.core.io.ClasspathResource;
 import me.codeingboy.litespring.core.io.Resource;

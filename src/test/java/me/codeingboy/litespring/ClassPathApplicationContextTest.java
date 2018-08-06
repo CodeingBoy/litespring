@@ -1,7 +1,7 @@
 package me.codeingboy.litespring;
 
 import me.codeingboy.litespring.context.ApplicationContext;
-import me.codeingboy.litespring.context.ClassPathXmlApplicationContext;
+import me.codeingboy.litespring.context.support.ClassPathXmlApplicationContext;
 import me.codeingboy.litespring.services.PetStoreService;
 import org.junit.Assert;
 import org.junit.Test;
