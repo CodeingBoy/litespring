@@ -7,7 +7,7 @@ import me.codeingboy.litespring.core.io.Resource;
  * Application context based on xml in classpath
  *
  * @author CodeingBoy
- * @version 3
+ * @version 4
  * @see AbstractXmlApplicationContext
  */
 public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContext {
@@ -18,7 +18,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 
     @Override
     public Resource getResourceByPath(String path) {
-        return new ClasspathResource(path);
+        return new ClasspathResource(path, getBeanClassLoader());
     }
 
 }

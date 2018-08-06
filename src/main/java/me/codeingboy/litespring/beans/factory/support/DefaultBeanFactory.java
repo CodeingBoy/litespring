@@ -3,6 +3,7 @@ package me.codeingboy.litespring.beans.factory.support;
 import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
+import me.codeingboy.litespring.beans.factory.ConfigurableBeanFactory;
 import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
 import me.codeingboy.litespring.utils.ClassUtils;
 
@@ -13,12 +14,14 @@ import java.util.Map;
  * Default implementation of {@link DefaultBeanFactory}
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  * @see BeanFactory
  */
-public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry, ConfigurableBeanFactory {
 
     private Map<String, BeanDefinition> definitionMap = new HashMap<>();
+
+    private ClassLoader classLoader;
 
     /**
      * Construct a bean factory
@@ -32,7 +35,7 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
         if (definition == null) {
             throw new BeanCreationException("Bean definition not found");
         }
-        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+        ClassLoader classLoader = getBeanClassLoader();
         try {
             Class<?> clazz = classLoader.loadClass(definition.getClassName());
             return clazz.newInstance();
@@ -51,4 +54,16 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
         this.definitionMap.put(beanId, beanDefinition);
     }
 
+    @Override
+    public ClassLoader getBeanClassLoader() {
+        if (classLoader == null) {
+            return ClassUtils.getDefaultClassLoader();
+        }
+        return classLoader;
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 }

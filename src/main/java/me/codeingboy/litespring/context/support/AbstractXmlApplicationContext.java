@@ -9,11 +9,21 @@ import me.codeingboy.litespring.core.io.Resource;
  * An abstract xml application context based on {@link Resource} abstraction
  *
  * @author CodeingBoy
- * @version 2
+ * @version 3
  * @see ApplicationContext
  */
 public abstract class AbstractXmlApplicationContext implements ApplicationContext {
     private DefaultBeanFactory beanFactory;
+
+    @Override
+    public ClassLoader getBeanClassLoader() {
+        return beanFactory.getBeanClassLoader();
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        beanFactory.setBeanClassLoader(classLoader);
+    }
 
     public AbstractXmlApplicationContext(String configFile) {
         beanFactory = new DefaultBeanFactory();

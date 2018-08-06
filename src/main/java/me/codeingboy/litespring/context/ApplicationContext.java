@@ -1,13 +1,13 @@
 package me.codeingboy.litespring.context;
 
-import me.codeingboy.litespring.beans.factory.BeanFactory;
+import me.codeingboy.litespring.beans.factory.ConfigurableBeanFactory;
 
 /**
  * Application context
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  */
-public interface ApplicationContext extends BeanFactory {
+public interface ApplicationContext extends ConfigurableBeanFactory {
 
 }
