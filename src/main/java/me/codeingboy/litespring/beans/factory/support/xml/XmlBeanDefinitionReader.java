@@ -45,7 +45,7 @@ public class XmlBeanDefinitionReader {
     /**
      * Register bean definitions to factory
      *
-     * @param fileName bean definition file name
+     * @param resource Bean definition resource
      */
     public void registerBeanDefinitions(Resource resource) {
         try {
