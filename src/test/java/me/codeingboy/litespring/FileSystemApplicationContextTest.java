@@ -1,24 +1,24 @@
 package me.codeingboy.litespring;
 
 import me.codeingboy.litespring.context.ApplicationContext;
-import me.codeingboy.litespring.context.ClassPathXmlApplicationContext;
+import me.codeingboy.litespring.context.FileSystemXmlApplicationContext;
 import me.codeingboy.litespring.services.PetStoreService;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test for {@link ApplicationContext}
+ * Test for {@link me.codeingboy.litespring.context.FileSystemXmlApplicationContext}
  *
  * @author CodeingBoy
  * @version 1
  */
-public class ApplicationContextTest {
+public class FileSystemApplicationContextTest {
 
     private final static String BEAN_ID_PET_STORE_SERVICE = "petStoreService";
 
     @Test
     public void getBeanTest() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("petstore-v1.xml");
+        ApplicationContext context = new FileSystemXmlApplicationContext("./src/test/resources/petstore-v1.xml");
         PetStoreService petStoreService = (PetStoreService) context.getBean(BEAN_ID_PET_STORE_SERVICE);
         Assert.assertNotNull(petStoreService);
     }

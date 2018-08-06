@@ -12,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-        ApplicationContextTest.class,
+        ClassPathApplicationContextTest.class,
+        FileSystemApplicationContextTest.class,
         DefaultBeanFactoryTest.class,
         ResourceTest.class
 })
