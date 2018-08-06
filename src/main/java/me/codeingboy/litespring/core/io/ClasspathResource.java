@@ -30,7 +30,6 @@ public class ClasspathResource implements Resource {
 
     @Override
     public InputStream getInputStream() throws FileNotFoundException {
-        ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(path);
         if (inputStream == null) {
             throw new FileNotFoundException();
