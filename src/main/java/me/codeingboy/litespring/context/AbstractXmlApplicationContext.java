@@ -8,18 +8,21 @@ import me.codeingboy.litespring.core.io.Resource;
  * An abstract xml application context based on {@link Resource} abstraction
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  * @see ApplicationContext
  */
 public abstract class AbstractXmlApplicationContext implements ApplicationContext {
     private DefaultBeanFactory beanFactory;
 
-    public AbstractXmlApplicationContext(Resource resource) {
+    public AbstractXmlApplicationContext(String configFile) {
         beanFactory = new DefaultBeanFactory();
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
 
+        Resource resource = getResourceByPath(configFile);
         reader.registerBeanDefinitions(resource);
     }
+
+    public abstract Resource getResourceByPath(String path);
 
     @Override
     public Object getBean(String beanId) {
