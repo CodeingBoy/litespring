@@ -22,6 +22,7 @@ import static org.junit.Assert.*;
 public class DefaultBeanFactoryTest {
 
     private final static String BEAN_ID_PET_STORE_SERVICE = "petStoreService";
+    private final static String BEAN_ID_PROTOTYPE_BEAN = "prototypeBean";
 
     private DefaultBeanFactory factory;
     private XmlBeanDefinitionReader reader;
@@ -71,5 +72,45 @@ public class DefaultBeanFactoryTest {
         assertNotNull(beanDefinition);
 
         Object shouldThrowException = factory.getBean("invalidBean");
+    }
+
+    @Test
+    public void singletonBeanTest() {
+        Resource resource = new ClasspathResource("petstore-v1.xml");
+        reader.registerBeanDefinitions(resource);
+
+        BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PET_STORE_SERVICE);
+        assertEquals("me.codeingboy.litespring.services.PetStoreService", beanDefinition.getClassName());
+
+        assertTrue(beanDefinition.isSingleton());
+        assertFalse(beanDefinition.isPrototype());
+        assertEquals(BeanDefinition.SCOPE_DEFAULT, beanDefinition.getScope());
+
+        Object bean = factory.getBean(BEAN_ID_PET_STORE_SERVICE);
+        assertNotNull(bean);
+        assertTrue(bean instanceof PetStoreService);
+
+        Object shouldBeSameBean = factory.getBean(BEAN_ID_PET_STORE_SERVICE);
+        assertEquals(bean, shouldBeSameBean);
+    }
+
+    @Test
+    public void prototypeTest() {
+        Resource resource = new ClasspathResource("petstore-v1.xml");
+        reader.registerBeanDefinitions(resource);
+
+        BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PROTOTYPE_BEAN);
+        assertEquals("me.codeingboy.litespring.services.PetStoreService", beanDefinition.getClassName());
+
+        assertTrue(beanDefinition.isPrototype());
+        assertFalse(beanDefinition.isSingleton());
+        assertEquals(BeanDefinition.SCOPE_PROTOTYPE, beanDefinition.getScope());
+
+        Object bean = factory.getBean(BEAN_ID_PROTOTYPE_BEAN);
+        assertNotNull(bean);
+        assertTrue(bean instanceof PetStoreService);
+
+        Object shouldNotBeSameBean = factory.getBean(BEAN_ID_PROTOTYPE_BEAN);
+        assertNotEquals(bean, shouldNotBeSameBean);
     }
 }

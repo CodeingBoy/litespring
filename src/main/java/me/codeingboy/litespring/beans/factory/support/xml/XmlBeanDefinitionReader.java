@@ -29,6 +29,7 @@ public class XmlBeanDefinitionReader {
 
     private final static String ID_ATTRIBUTE = "id";
     private final static String CLASS_ATTRIBUTE = "class";
+    private final static String SCOPE_ATTRIBUTE = "scope";
 
     private List<BeanElement> beanElements = new ArrayList<>();
     private BeanDefinitionRegistry registry;
@@ -51,7 +52,8 @@ public class XmlBeanDefinitionReader {
         try {
             parseXmlBeanDefinitionFile(resource);
             for (XmlBeanDefinitionReader.BeanElement element : beanElements) {
-                BeanDefinition definition = new GenericBeanDefinition(element.getClassName());
+                String scope = element.getScope();
+                BeanDefinition definition = new GenericBeanDefinition(element.getClassName(), scope);
                 registry.registerBeanDefinition(element.getId(), definition);
             }
         } catch (FileNotFoundException | DocumentException e) {
@@ -80,7 +82,13 @@ public class XmlBeanDefinitionReader {
             Attribute classAttribute = currentElement.attribute(CLASS_ATTRIBUTE);
             String className = classAttribute.getValue();
 
-            BeanElement beanElement = new BeanElement(id, className);
+            Attribute scopeAttribute = currentElement.attribute(SCOPE_ATTRIBUTE);
+            String scope = BeanDefinition.SCOPE_DEFAULT;
+            if (scopeAttribute != null) {
+                scope = scopeAttribute.getValue();
+            }
+
+            BeanElement beanElement = new BeanElement(id, className, scope);
 
             beanElements.add(beanElement);
         }
@@ -90,10 +98,12 @@ public class XmlBeanDefinitionReader {
 
         private String id;
         private String className;
+        private String scope;
 
-        public BeanElement(String id, String className) {
+        public BeanElement(String id, String className, String scope) {
             this.id = id;
             this.className = className;
+            this.scope = scope;
         }
 
         public String getId() {
@@ -102,6 +112,14 @@ public class XmlBeanDefinitionReader {
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public String getScope() {
+            return scope;
+        }
+
+        public void setScope(String scope) {
+            this.scope = scope;
         }
 
         public String getClassName() {

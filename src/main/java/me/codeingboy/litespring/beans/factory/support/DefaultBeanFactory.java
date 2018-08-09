@@ -20,6 +20,7 @@ import java.util.Map;
 public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry, ConfigurableBeanFactory {
 
     private Map<String, BeanDefinition> definitionMap = new HashMap<>();
+    private Map<String, Object> singletonBeansMap = new HashMap<>();
 
     private ClassLoader classLoader;
 
@@ -35,10 +36,20 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry, 
         if (definition == null) {
             throw new BeanCreationException("Bean definition not found");
         }
+        if (definition.isSingleton()) {
+            Object o = singletonBeansMap.get(beanId);
+            if (o != null) {
+                return o;
+            }
+        }
         ClassLoader classLoader = getBeanClassLoader();
         try {
             Class<?> clazz = classLoader.loadClass(definition.getClassName());
-            return clazz.newInstance();
+            Object o = clazz.newInstance();
+            if (definition.isSingleton()) {
+                singletonBeansMap.put(beanId, o);
+            }
+            return o;
         } catch (Exception e) {
             throw new BeanCreationException("Exception occurred while creating bean " + beanId + "'s instance", e);
         }
