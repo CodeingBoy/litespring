@@ -1,13 +1,12 @@
 package me.codeingboy.litespring.context.support;
 
-import me.codeingboy.litespring.core.io.FileSystemResource;
 import me.codeingboy.litespring.core.io.Resource;
 
 /**
  * Application context based on xml on file system
  *
  * @author CodeingBoy
- * @version 3
+ * @version 4
  * @see AbstractXmlApplicationContext
  */
 public class FileSystemXmlApplicationContext extends AbstractXmlApplicationContext {
@@ -18,7 +17,7 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 
     @Override
     public Resource getResourceByPath(String path) {
-        return new FileSystemResource(path);
+        return getResource(path);
     }
 
 }

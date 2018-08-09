@@ -3,26 +3,27 @@ package me.codeingboy.litespring.context.support;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.beans.factory.support.xml.XmlBeanDefinitionReader;
 import me.codeingboy.litespring.context.ApplicationContext;
+import me.codeingboy.litespring.core.io.DefaultResourceLoader;
 import me.codeingboy.litespring.core.io.Resource;
 
 /**
  * An abstract xml application context based on {@link Resource} abstraction
  *
  * @author CodeingBoy
- * @version 3
+ * @version 4
  * @see ApplicationContext
  */
-public abstract class AbstractXmlApplicationContext implements ApplicationContext {
+public abstract class AbstractXmlApplicationContext extends DefaultResourceLoader implements ApplicationContext {
     private DefaultBeanFactory beanFactory;
 
     @Override
     public ClassLoader getBeanClassLoader() {
-        return beanFactory.getBeanClassLoader();
+        return getClassLoader();
     }
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
-        beanFactory.setBeanClassLoader(classLoader);
+        setClassLoader(classLoader);
     }
 
     public AbstractXmlApplicationContext(String configFile) {
