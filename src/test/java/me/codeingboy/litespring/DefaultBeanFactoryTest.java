@@ -3,6 +3,7 @@ package me.codeingboy.litespring;
 import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
+import me.codeingboy.litespring.beans.factory.config.RuntimeBeanReference;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.beans.factory.support.xml.XmlBeanDefinitionReader;
 import me.codeingboy.litespring.beans.support.PropertyValue;
@@ -131,12 +132,12 @@ public class DefaultBeanFactoryTest {
         PropertyValue itemDaoValue = getPropertyValue(propertyValueList, "itemDao");
         assertNotNull(itemDaoValue);
         assertEquals("itemDao", itemDaoValue.getName());
-        // assertTrue(itemDaoValue.getValue() instanceof RuntimeReference);
+        assertTrue(itemDaoValue.getValue() instanceof RuntimeBeanReference);
 
         PropertyValue accountDaoValue = getPropertyValue(propertyValueList, "accountDao");
         assertNotNull(accountDaoValue);
         assertEquals("accountDao", accountDaoValue.getName());
-        // assertTrue(accountDaoValue.getValue() instanceof RuntimeReference);
+        assertTrue(accountDaoValue.getValue() instanceof RuntimeBeanReference);
     }
 
     private PropertyValue getPropertyValue(List<PropertyValue> values, String propertyName) {

@@ -2,11 +2,15 @@ package me.codeingboy.litespring.beans.factory.support.xml;
 
 import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
+import me.codeingboy.litespring.beans.factory.config.RuntimeBeanReference;
+import me.codeingboy.litespring.beans.factory.config.TypedStringValue;
 import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
 import me.codeingboy.litespring.beans.support.GenericBeanDefinition;
-import me.codeingboy.litespring.beans.support.GenericPropertyValue;
 import me.codeingboy.litespring.beans.support.PropertyValue;
 import me.codeingboy.litespring.core.io.Resource;
+import me.codeingboy.litespring.utils.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -18,15 +22,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A parser for parsing XML bean config file
  *
  * @author CodeingBoy
- * @version 2
+ * @version 3
  */
 public class XmlBeanDefinitionReader {
+
+    private final static Logger LOGGER = LogManager.getLogger();
 
     private final static String BEAN_ELEMENT = "bean";
 
@@ -61,9 +66,7 @@ public class XmlBeanDefinitionReader {
             parseXmlBeanDefinitionFile(resource);
             for (XmlBeanDefinitionReader.BeanElement element : beanElements) {
                 String scope = element.getScope();
-                List<PropertyElement> propertyElements = element.getPropertyElements();
-                List<PropertyValue> propertyValues = propertyElements.stream()
-                        .map(e -> new GenericPropertyValue(e.getName(), e.getRef())).collect(Collectors.toList());
+                List<PropertyValue> propertyValues = element.getPropertyValues();
                 BeanDefinition definition = new GenericBeanDefinition(element.getClassName(), scope, propertyValues);
                 registry.registerBeanDefinition(element.getId(), definition);
             }
@@ -99,44 +102,52 @@ public class XmlBeanDefinitionReader {
                 scope = scopeAttribute.getValue();
             }
 
-            List<PropertyElement> propertyElements = parsePropertyElements(currentElement);
+            List<PropertyValue> propertyValues = parsePropertyElements(currentElement);
 
-            BeanElement beanElement = new BeanElement(id, className, scope, propertyElements);
-
+            BeanElement beanElement = new BeanElement(id, className, scope, propertyValues);
             beanElements.add(beanElement);
         }
     }
 
-    private List<PropertyElement> parsePropertyElements(Element beanElement) {
+    private List<PropertyValue> parsePropertyElements(Element beanElement) {
         Iterator<Element> elementIterator = beanElement.elementIterator(PROPERTY_ELEMENT);
-        List<PropertyElement> elements = new ArrayList<>();
+        List<PropertyValue> values = new ArrayList<>();
 
         while (elementIterator.hasNext()) {
             Element propertyElement = elementIterator.next();
-            Attribute nameAttribute = propertyElement.attribute(NAME_ATTRIBUTE);
-            Attribute refAttribute = propertyElement.attribute(REF_ATTRIBUTE);
-            Attribute valueAttribute = propertyElement.attribute(VALUE_ATTRIBUTE);
 
-            if (nameAttribute == null) {
-                throw new BeanDefinitionReadException("Property element should have a 'name' attribute");
+            Attribute nameAttribute = propertyElement.attribute(NAME_ATTRIBUTE);
+            if (!StringUtils.hasLength(nameAttribute.getValue())) {
+                LOGGER.fatal("Property element should have a 'name' attribute");
+                return null;
             }
             String propertyName = nameAttribute.getValue();
-            PropertyElement e = new PropertyElement();
-            e.setName(propertyName);
+            Object value = parsePropertyValue(propertyElement);
 
-            if (refAttribute != null) {
-                String reference = refAttribute.getValue();
-                e.setRef(reference);
-            } else if (valueAttribute != null) {
-                String value = valueAttribute.getValue();
-                e.setValue(value);
-            } else {
-                throw new BeanDefinitionReadException("Property element should have either a 'ref' attribute or a 'value' attribute");
-            }
-            elements.add(e);
+            PropertyValue v = new PropertyValue(propertyName, value);
+            values.add(v);
         }
 
-        return elements;
+        return values;
+    }
+
+    private Object parsePropertyValue(Element propertyElement) {
+        Attribute refAttribute = propertyElement.attribute(REF_ATTRIBUTE);
+        Attribute valueAttribute = propertyElement.attribute(VALUE_ATTRIBUTE);
+
+        if (refAttribute != null) {
+            String reference = refAttribute.getValue();
+            if (!StringUtils.hasText(reference)) {
+                LOGGER.error("ref attribute should specify a non-null string");
+                return null;
+            }
+            return new RuntimeBeanReference(reference);
+        } else if (valueAttribute != null) {
+            String value = valueAttribute.getValue();
+            return new TypedStringValue(value);
+        } else {
+            throw new BeanDefinitionReadException("Property element should have either a 'ref' attribute or a 'value' attribute");
+        }
     }
 
     public static class BeanElement {
@@ -144,13 +155,13 @@ public class XmlBeanDefinitionReader {
         private String id;
         private String className;
         private String scope;
-        private List<PropertyElement> propertyElements;
+        private List<PropertyValue> propertyValues;
 
-        public BeanElement(String id, String className, String scope, List<PropertyElement> propertyElements) {
+        public BeanElement(String id, String className, String scope, List<PropertyValue> propertyValues) {
             this.id = id;
             this.className = className;
             this.scope = scope;
-            this.propertyElements = propertyElements;
+            this.propertyValues = propertyValues;
         }
 
         public BeanElement(String id, String className, String scope) {
@@ -159,12 +170,12 @@ public class XmlBeanDefinitionReader {
             this.scope = scope;
         }
 
-        public List<PropertyElement> getPropertyElements() {
-            return propertyElements;
+        public List<PropertyValue> getPropertyValues() {
+            return propertyValues;
         }
 
-        public void setPropertyElements(List<PropertyElement> propertyElements) {
-            this.propertyElements = propertyElements;
+        public void setPropertyValues(List<PropertyValue> propertyValues) {
+            this.propertyValues = propertyValues;
         }
 
         public String getId() {

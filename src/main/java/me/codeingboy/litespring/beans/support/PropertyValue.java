@@ -1,15 +1,37 @@
 package me.codeingboy.litespring.beans.support;
 
 /**
- * Interface of bean's property
+ * Bean's property
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  */
-public interface PropertyValue {
-    String getName();
+public class PropertyValue {
+    private String name;
+    private Object value;
+    private boolean converted;
+    private Object convertedValue;
 
-    String getValue();
+    public PropertyValue() {
+    }
 
-    Object getConvertedValue();
+    public PropertyValue(String name, Object value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public Object getConvertedValue() {
+        if (!converted) {
+            return value;
+        }
+        return null;
+    }
 }
