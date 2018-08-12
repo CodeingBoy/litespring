@@ -5,11 +5,14 @@ import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.beans.factory.support.xml.XmlBeanDefinitionReader;
+import me.codeingboy.litespring.beans.support.PropertyValue;
 import me.codeingboy.litespring.core.io.ClasspathResource;
 import me.codeingboy.litespring.core.io.Resource;
 import me.codeingboy.litespring.services.PetStoreService;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -112,5 +115,19 @@ public class DefaultBeanFactoryTest {
 
         Object shouldNotBeSameBean = factory.getBean(BEAN_ID_PROTOTYPE_BEAN);
         assertNotEquals(bean, shouldNotBeSameBean);
+    }
+
+    @Test
+    public void beanPropertyTest() {
+        Resource resource = new ClasspathResource("petstore-v2.xml");
+        reader.registerBeanDefinitions(resource);
+
+        BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PET_STORE_SERVICE);
+        assertEquals("me.codeingboy.litespring.services.PetStoreService", beanDefinition.getClassName());
+
+        List<PropertyValue> propertyValueList = beanDefinition.getPropertyValues();
+        assertEquals(2, propertyValueList.size());
+        assertEquals("itemDao", propertyValueList.get(0).getName());
+        assertEquals("accountDao", propertyValueList.get(1).getName());
     }
 }

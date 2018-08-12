@@ -2,6 +2,8 @@ package me.codeingboy.litespring.beans.support;
 
 import me.codeingboy.litespring.beans.BeanDefinition;
 
+import java.util.List;
+
 /**
  * Default implementation of {@link BeanDefinition}
  *
@@ -12,10 +14,12 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     private String className;
     private String scope = SCOPE_DEFAULT;
+    private List<PropertyValue> propertyValues;
 
-    public GenericBeanDefinition(String className, String scope) {
+    public GenericBeanDefinition(String className, String scope, List<PropertyValue> propertyValues) {
         this.className = className;
         this.scope = scope;
+        this.propertyValues = propertyValues;
     }
 
     @Override
@@ -36,5 +40,10 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public String getScope() {
         return scope;
+    }
+
+    @Override
+    public List<PropertyValue> getPropertyValues() {
+        return propertyValues;
     }
 }

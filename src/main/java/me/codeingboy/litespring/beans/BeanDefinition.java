@@ -1,5 +1,9 @@
 package me.codeingboy.litespring.beans;
 
+import me.codeingboy.litespring.beans.support.PropertyValue;
+
+import java.util.List;
+
 /**
  * Bean's definition information, such as class name and id
  *
@@ -35,4 +39,11 @@ public interface BeanDefinition {
      * @return A string representing bean's scope
      */
     String getScope();
+
+    /**
+     * Get bean's properties
+     *
+     * @return bean's properties
+     */
+    List<PropertyValue> getPropertyValues();
 }
