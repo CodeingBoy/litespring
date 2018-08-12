@@ -127,7 +127,24 @@ public class DefaultBeanFactoryTest {
 
         List<PropertyValue> propertyValueList = beanDefinition.getPropertyValues();
         assertEquals(2, propertyValueList.size());
-        assertEquals("itemDao", propertyValueList.get(0).getName());
-        assertEquals("accountDao", propertyValueList.get(1).getName());
+
+        PropertyValue itemDaoValue = getPropertyValue(propertyValueList, "itemDao");
+        assertNotNull(itemDaoValue);
+        assertEquals("itemDao", itemDaoValue.getName());
+        // assertTrue(itemDaoValue.getValue() instanceof RuntimeReference);
+
+        PropertyValue accountDaoValue = getPropertyValue(propertyValueList, "accountDao");
+        assertNotNull(accountDaoValue);
+        assertEquals("accountDao", accountDaoValue.getName());
+        // assertTrue(accountDaoValue.getValue() instanceof RuntimeReference);
+    }
+
+    private PropertyValue getPropertyValue(List<PropertyValue> values, String propertyName) {
+        for (PropertyValue value : values) {
+            if (value.getName().equals(propertyName)) {
+                return value;
+            }
+        }
+        return null;
     }
 }
