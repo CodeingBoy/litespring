@@ -17,9 +17,22 @@ public interface BeanDefinition {
      */
     String getClassName();
 
+    /**
+     * Is this bean's scope singleton?
+     *
+     * @return if scope is singleton, return <code>true</code>; else return <code>false</code>
+     */
     boolean isSingleton();
 
+    /**
+     * Is this bean's scope prototype?
+     * @return if scope is prototype, return <code>true</code>; else return <code>false</code>
+     */
     boolean isPrototype();
 
+    /**
+     * Get bean's scope
+     * @return A string representing bean's scope
+     */
     String getScope();
 }
