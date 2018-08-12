@@ -11,7 +11,7 @@ import me.codeingboy.litespring.beans.BeanDefinition;
 public class GenericBeanDefinition implements BeanDefinition {
 
     private String className;
-    private String scope;
+    private String scope = SCOPE_DEFAULT;
 
     public GenericBeanDefinition(String className, String scope) {
         this.className = className;
@@ -25,7 +25,7 @@ public class GenericBeanDefinition implements BeanDefinition {
 
     @Override
     public boolean isSingleton() {
-        return scope.equals(BeanDefinition.SCOPE_SINGLETON);
+        return scope.equals(BeanDefinition.SCOPE_SINGLETON) || scope.equals(BeanDefinition.SCOPE_DEFAULT);
     }
 
     @Override

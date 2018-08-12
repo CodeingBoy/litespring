@@ -8,7 +8,7 @@ package me.codeingboy.litespring.beans;
  */
 public interface BeanDefinition {
 
-    String SCOPE_SINGLETON = "Singleton", SCOPE_DEFAULT = SCOPE_SINGLETON, SCOPE_PROTOTYPE = "prototype";
+    String SCOPE_SINGLETON = "Singleton", SCOPE_DEFAULT = "", SCOPE_PROTOTYPE = "prototype";
 
     /**
      * Get bean's class name
