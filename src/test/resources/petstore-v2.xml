@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans">
+    <bean id="petStoreService" class="me.codeingboy.litespring.services.PetStoreService">
+        <property name="itemDao" ref="itemDao"/>
+        <property name="accountDao" ref="accountDao"/>
+    </bean>
+    <bean id="itemDao" class="me.codeingboy.litespring.dao.ItemDao"/>
+    <bean id="accountDao" class="me.codeingboy.litespring.dao.AccountDao"/>
+
+    <bean id="prototypeBean" class="me.codeingboy.litespring.services.PetStoreService" scope="prototype"/>
+    <bean id="invalidBean" class="not.exists"/>
+</beans>
