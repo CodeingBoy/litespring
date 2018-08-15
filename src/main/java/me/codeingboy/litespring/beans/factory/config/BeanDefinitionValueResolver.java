@@ -6,7 +6,7 @@ import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
  * A resolver for converting bean definition to value
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  * @see me.codeingboy.litespring.beans.support.PropertyValue
  */
 public class BeanDefinitionValueResolver {
@@ -27,7 +27,7 @@ public class BeanDefinitionValueResolver {
     }
 
     private Object resolveTypedStringValue(TypedStringValue value) {
-        return null;
+        return value.getValue();
     }
 
     private Object resolveRuntimeBeanReference(RuntimeBeanReference reference) {
