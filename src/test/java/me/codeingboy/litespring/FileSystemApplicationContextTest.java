@@ -10,7 +10,7 @@ import org.junit.Test;
  * Test for {@link FileSystemXmlApplicationContext}
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  */
 public class FileSystemApplicationContextTest {
 
@@ -21,6 +21,9 @@ public class FileSystemApplicationContextTest {
         ApplicationContext context = new FileSystemXmlApplicationContext("./src/test/resources/petstore-v2.xml");
         PetStoreService petStoreService = (PetStoreService) context.getBean(BEAN_ID_PET_STORE_SERVICE);
         Assert.assertNotNull(petStoreService);
+
+        Assert.assertNotNull(petStoreService.getAccountDao());
+        Assert.assertNotNull(petStoreService.getItemDao());
     }
 
 }

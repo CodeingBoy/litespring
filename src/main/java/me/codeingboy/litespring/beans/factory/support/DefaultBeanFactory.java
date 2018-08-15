@@ -4,10 +4,17 @@ import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
 import me.codeingboy.litespring.beans.factory.ConfigurableBeanFactory;
+import me.codeingboy.litespring.beans.factory.config.BeanDefinitionValueResolver;
 import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
 import me.codeingboy.litespring.beans.support.DefaultSingletonBeanRegistry;
+import me.codeingboy.litespring.beans.support.PropertyValue;
 import me.codeingboy.litespring.utils.ClassUtils;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +29,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
         implements BeanFactory, BeanDefinitionRegistry, ConfigurableBeanFactory {
 
     private Map<String, BeanDefinition> definitionMap = new HashMap<>();
+    private BeanDefinitionValueResolver resolver = new BeanDefinitionValueResolver(this);
 
     private ClassLoader classLoader;
 
@@ -49,6 +57,34 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
     }
 
     private Object createBean(String beanId, BeanDefinition definition) {
+        Object bean = instantiateBean(beanId, definition);
+        bean = populateBean(bean, definition);
+        return bean;
+    }
+
+    private Object populateBean(Object bean, BeanDefinition definition) {
+        for (PropertyValue propertyValue : definition.getPropertyValues()) {
+            String name = propertyValue.getName();
+            Object value = resolver.resolveValueIfNecessary(propertyValue.getValue());
+            try {
+                BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
+                for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {
+                    if (descriptor.getName().equals(name)) {
+                        descriptor.getWriteMethod().invoke(bean, value);
+                    }
+                }
+            } catch (IntrospectionException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        return bean;
+    }
+
+    private Object instantiateBean(String beanId, BeanDefinition definition) {
         ClassLoader classLoader = getBeanClassLoader();
         try {
             Class<?> clazz = classLoader.loadClass(definition.getClassName());
