@@ -3,6 +3,8 @@
     <bean id="petStoreService" class="me.codeingboy.litespring.services.PetStoreService">
         <property name="itemDao" ref="itemDao"/>
         <property name="accountDao" ref="accountDao"/>
+        <property name="owner" value="CodeingBoy"/>
+        <property name="version" value="1"/>
     </bean>
     <bean id="itemDao" class="me.codeingboy.litespring.dao.ItemDao"/>
     <bean id="accountDao" class="me.codeingboy.litespring.dao.AccountDao"/>

@@ -66,18 +66,26 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
         for (PropertyValue propertyValue : definition.getPropertyValues()) {
             String name = propertyValue.getName();
             Object value = resolver.resolveValueIfNecessary(propertyValue.getValue());
+            if (value == null) {
+                continue;
+            }
             try {
                 BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
                 for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {
                     if (descriptor.getName().equals(name)) {
-                        descriptor.getWriteMethod().invoke(bean, value);
+                        try {
+                            descriptor.getWriteMethod().invoke(bean, value);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (IllegalArgumentException e) {
+                            // swallow it
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                     }
                 }
             } catch (IntrospectionException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
