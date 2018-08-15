@@ -22,7 +22,6 @@ import static junit.framework.TestCase.assertNotNull;
  * @see BeanDefinitionValueResolver
  */
 public class BeanDefinitionValueResolverTest {
-    private final static String BEAN_ID_PET_STORE_SERVICE = "petStoreService";
 
     @Test
     public void runtimeBeanReferenceResolveTest() {
