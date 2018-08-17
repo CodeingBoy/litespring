@@ -60,6 +60,28 @@ public class CustomBooleanEditorTest {
     }
 
     @Test
+    public void onStringTest() {
+        CustomBooleanEditor editor = new CustomBooleanEditor(true);
+
+        editor.setAsText("on");
+        Object value = editor.getValue();
+        assertNotNull(value);
+        assertTrue(value instanceof Boolean);
+        assertTrue((Boolean) value);
+    }
+
+    @Test
+    public void offStringTest() {
+        CustomBooleanEditor editor = new CustomBooleanEditor(true);
+
+        editor.setAsText("off");
+        Object value = editor.getValue();
+        assertNotNull(value);
+        assertTrue(value instanceof Boolean);
+        assertFalse((Boolean) value);
+    }
+
+    @Test
     public void oneStringTest() {
         CustomBooleanEditor editor = new CustomBooleanEditor(true);
 

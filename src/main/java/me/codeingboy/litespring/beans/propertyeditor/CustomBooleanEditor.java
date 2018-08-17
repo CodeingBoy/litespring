@@ -14,8 +14,8 @@ import java.util.Collection;
  * @see PropertyEditorSupport
  */
 public class CustomBooleanEditor extends PropertyEditorSupport {
-    private final static Collection<String> trueStrings = Arrays.asList("true", "yes", "1");
-    private final static Collection<String> falseStrings = Arrays.asList("false", "no", "0");
+    private final static Collection<String> trueStrings = Arrays.asList("true", "yes", "on", "1");
+    private final static Collection<String> falseStrings = Arrays.asList("false", "no", "off", "0");
     private boolean allowEmpty;
 
     public CustomBooleanEditor(boolean allowEmpty) {
