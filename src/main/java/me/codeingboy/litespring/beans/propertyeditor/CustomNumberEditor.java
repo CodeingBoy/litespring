@@ -1,29 +1,30 @@
-package me.codeingboy.litespring.beans.support;
+package me.codeingboy.litespring.beans.propertyeditor;
 
 import me.codeingboy.litespring.utils.NumberUtils;
 import me.codeingboy.litespring.utils.StringUtils;
 
 import java.beans.PropertyEditorSupport;
 import java.text.NumberFormat;
-import java.text.ParseException;
 
 /**
+ * A property editor for {@link Number}
+ *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  * @see PropertyEditorSupport
  */
 public class CustomNumberEditor extends PropertyEditorSupport {
     private NumberFormat numberFormat;
-    private Class numberClass;
+    private Class<? extends Number> numberClass;
     private boolean allowEmpty;
 
-    public CustomNumberEditor(Class numberClass, NumberFormat numberFormat, boolean allowEmpty) {
+    public CustomNumberEditor(Class<? extends Number> numberClass, NumberFormat numberFormat, boolean allowEmpty) {
         this.numberFormat = numberFormat;
         this.numberClass = numberClass;
         this.allowEmpty = allowEmpty;
     }
 
-    public CustomNumberEditor(Class numberClass, boolean allowEmpty) {
+    public CustomNumberEditor(Class<? extends Number> numberClass, boolean allowEmpty) {
         this(numberClass, null, allowEmpty);
     }
 
@@ -32,12 +33,8 @@ public class CustomNumberEditor extends PropertyEditorSupport {
         if (this.allowEmpty && !StringUtils.hasLength(text)) {
             setValue(null);
         } else if (numberFormat != null) {
-            try {
-                Number number = numberFormat.parse(text);
-                setValue(number);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Number number = NumberUtils.parseNumber(text, numberClass, numberFormat);
+            setValue(number);
         } else {
             Number number = NumberUtils.parseNumber(text, numberClass);
             setValue(number);

@@ -1,6 +1,6 @@
 package me.codeingboy.litespring;
 
-import me.codeingboy.litespring.beans.support.CustomNumberEditor;
+import me.codeingboy.litespring.beans.propertyeditor.CustomNumberEditor;
 import org.junit.Test;
 
 import static junit.framework.TestCase.*;
