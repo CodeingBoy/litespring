@@ -10,7 +10,7 @@ import static junit.framework.TestCase.*;
  * Test of {@link CustomBooleanEditor}
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  * @see CustomBooleanEditor
  */
 public class CustomBooleanEditorTest {
@@ -31,6 +31,28 @@ public class CustomBooleanEditorTest {
         CustomBooleanEditor editor = new CustomBooleanEditor(true);
 
         editor.setAsText("false");
+        Object value = editor.getValue();
+        assertNotNull(value);
+        assertTrue(value instanceof Boolean);
+        assertFalse((Boolean) value);
+    }
+
+    @Test
+    public void trueUpperCaseStringTest() {
+        CustomBooleanEditor editor = new CustomBooleanEditor(true);
+
+        editor.setAsText("TRUE");
+        Object value = editor.getValue();
+        assertNotNull(value);
+        assertTrue(value instanceof Boolean);
+        assertTrue((Boolean) value);
+    }
+
+    @Test
+    public void falseUpperCaseStringTest() {
+        CustomBooleanEditor editor = new CustomBooleanEditor(true);
+
+        editor.setAsText("FALSE");
         Object value = editor.getValue();
         assertNotNull(value);
         assertTrue(value instanceof Boolean);

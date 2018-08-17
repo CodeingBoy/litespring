@@ -14,8 +14,9 @@ import java.util.Collection;
  * @see PropertyEditorSupport
  */
 public class CustomBooleanEditor extends PropertyEditorSupport {
-    private final static Collection<String> trueStrings = Arrays.asList("true", "yes", "on", "1");
-    private final static Collection<String> falseStrings = Arrays.asList("false", "no", "off", "0");
+    private final static Collection<String> TRUE_STRINGS = Arrays.asList("true", "yes", "on", "1");
+    private final static Collection<String> FALSE_STRINGS = Arrays.asList("false", "no", "off", "0");
+    private final static String VALUE_TRUE = "true", VALUE_FALSE = "false";
     private boolean allowEmpty;
 
     public CustomBooleanEditor(boolean allowEmpty) {
@@ -26,15 +27,38 @@ public class CustomBooleanEditor extends PropertyEditorSupport {
         this(true);
     }
 
+    public boolean containsIgnoreCase(Collection<String> strings, String key) {
+        for (String string : strings) {
+            if (string.equalsIgnoreCase(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String getAsText() {
+        Boolean value = (Boolean) getValue();
+        if (value == null) {
+            return "";
+        }
+
+        if (value) {
+            return VALUE_TRUE;
+        } else {
+            return VALUE_FALSE;
+        }
+    }
+
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
         if (allowEmpty && !StringUtils.hasLength(text)) {
             setValue(null);
         }
 
-        if (trueStrings.contains(text)) {
+        if (containsIgnoreCase(TRUE_STRINGS, text)) {
             setValue(true);
-        } else if (falseStrings.contains(text)) {
+        } else if (containsIgnoreCase(FALSE_STRINGS, text)) {
             setValue(false);
         } else {
             throw new IllegalArgumentException();
