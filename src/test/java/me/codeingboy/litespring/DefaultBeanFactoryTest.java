@@ -127,7 +127,7 @@ public class DefaultBeanFactoryTest {
         assertEquals("me.codeingboy.litespring.services.PetStoreService", beanDefinition.getClassName());
 
         List<PropertyValue> propertyValueList = beanDefinition.getPropertyValues();
-        assertEquals(2, propertyValueList.size());
+        assertEquals(4, propertyValueList.size());
 
         PropertyValue itemDaoValue = getPropertyValue(propertyValueList, "itemDao");
         assertNotNull(itemDaoValue);
