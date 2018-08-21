@@ -10,7 +10,7 @@ import org.junit.Test;
  * Test for {@link FileSystemXmlApplicationContext}
  *
  * @author CodeingBoy
- * @version 3
+ * @version 4
  */
 public class FileSystemApplicationContextTest {
 
@@ -27,6 +27,8 @@ public class FileSystemApplicationContextTest {
 
         Assert.assertNotNull(petStoreService.getOwner());
         Assert.assertEquals("CodeingBoy", petStoreService.getOwner());
+
+        Assert.assertEquals(2, petStoreService.getVersion());
     }
 
 }

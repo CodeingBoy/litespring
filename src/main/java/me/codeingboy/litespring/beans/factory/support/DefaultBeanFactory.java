@@ -1,6 +1,7 @@
 package me.codeingboy.litespring.beans.factory.support;
 
 import me.codeingboy.litespring.beans.BeanDefinition;
+import me.codeingboy.litespring.beans.TypeMismatchException;
 import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanFactory;
 import me.codeingboy.litespring.beans.factory.ConfigurableBeanFactory;
@@ -8,6 +9,8 @@ import me.codeingboy.litespring.beans.factory.config.BeanDefinitionValueResolver
 import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
 import me.codeingboy.litespring.beans.support.DefaultSingletonBeanRegistry;
 import me.codeingboy.litespring.beans.support.PropertyValue;
+import me.codeingboy.litespring.beans.typeconverter.SimpleTypeConverter;
+import me.codeingboy.litespring.beans.typeconverter.TypeConverter;
 import me.codeingboy.litespring.utils.ClassUtils;
 
 import java.beans.BeanInfo;
@@ -22,7 +25,7 @@ import java.util.Map;
  * Default implementation of {@link DefaultBeanFactory}
  *
  * @author CodeingBoy
- * @version 2
+ * @version 3
  * @see BeanFactory
  */
 public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
@@ -30,6 +33,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
 
     private Map<String, BeanDefinition> definitionMap = new HashMap<>();
     private BeanDefinitionValueResolver resolver = new BeanDefinitionValueResolver(this);
+    private TypeConverter typeConverter = new SimpleTypeConverter();
 
     private ClassLoader classLoader;
 
@@ -74,6 +78,7 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
                 for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {
                     if (descriptor.getName().equals(name)) {
                         try {
+                            value = typeConverter.convertIfNecessary(value, descriptor.getPropertyType());
                             descriptor.getWriteMethod().invoke(bean, value);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
@@ -81,6 +86,8 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
                             // swallow it
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
+                        } catch (TypeMismatchException e) {
+                            throw new RuntimeException(e);
                         }
                         break;
                     }
