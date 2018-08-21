@@ -1,5 +1,7 @@
 package me.codeingboy.litespring.beans.typeconverter;
 
+import me.codeingboy.litespring.beans.TypeMismatchException;
+
 /**
  * An interface with type convert operations defined
  * 
@@ -7,5 +9,5 @@ package me.codeingboy.litespring.beans.typeconverter;
  * @version 1
  */
 public interface TypeConverter {
-    <T> T convertIfNecessary(String value, Class<T> objectClass);
+    <T> T convertIfNecessary(Object value, Class<T> objectClass) throws TypeMismatchException;
 }
