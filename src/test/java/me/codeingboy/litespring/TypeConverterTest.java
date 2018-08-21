@@ -1,8 +1,8 @@
 package me.codeingboy.litespring;
 
+import me.codeingboy.litespring.beans.SimpleTypeConverter;
+import me.codeingboy.litespring.beans.TypeConverter;
 import me.codeingboy.litespring.beans.TypeMismatchException;
-import me.codeingboy.litespring.beans.typeconverter.SimpleTypeConverter;
-import me.codeingboy.litespring.beans.typeconverter.TypeConverter;
 import org.junit.Test;
 
 import static junit.framework.TestCase.*;

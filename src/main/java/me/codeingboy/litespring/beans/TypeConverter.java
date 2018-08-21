@@ -1,6 +1,4 @@
-package me.codeingboy.litespring.beans.typeconverter;
-
-import me.codeingboy.litespring.beans.TypeMismatchException;
+package me.codeingboy.litespring.beans;
 
 /**
  * An interface with type convert operations defined

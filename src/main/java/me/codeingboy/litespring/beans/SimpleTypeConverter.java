@@ -1,6 +1,5 @@
-package me.codeingboy.litespring.beans.typeconverter;
+package me.codeingboy.litespring.beans;
 
-import me.codeingboy.litespring.beans.TypeMismatchException;
 import me.codeingboy.litespring.beans.propertyeditor.CustomBooleanEditor;
 import me.codeingboy.litespring.beans.propertyeditor.CustomNumberEditor;
 import me.codeingboy.litespring.utils.ClassUtils;
