@@ -7,7 +7,7 @@ import me.codeingboy.litespring.beans.propertyeditor.CustomNumberEditor;
  * A simple implementation of {@link SimpleTypeConverter}
  * 
  * @author CodeingBoy
- * @version 1
+ * @version 2
  */
 public class SimpleTypeConverter implements TypeConverter {
 
@@ -17,10 +17,16 @@ public class SimpleTypeConverter implements TypeConverter {
 
     @Override
     public <T> T convertIfNecessary(String value, Class<T> objectClass) {
-        if (objectClass == Integer.class) {
+        if (String.class.isAssignableFrom(objectClass)) {
+            return (T) value;
+        }
+        if (Number.class.isAssignableFrom(objectClass)) {
             numberEditor.setAsText(value);
             return (T)numberEditor.getValue();
+        } else if (Boolean.class.isAssignableFrom(objectClass)) {
+            booleanEditor.setAsText(value);
+            return (T) booleanEditor.getValue();
         }
-        return (T)null;
+        throw new IllegalArgumentException();
     }
 }
