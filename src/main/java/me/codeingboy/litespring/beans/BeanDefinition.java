@@ -1,5 +1,6 @@
 package me.codeingboy.litespring.beans;
 
+import me.codeingboy.litespring.beans.support.ConstructorArgument;
 import me.codeingboy.litespring.beans.support.PropertyValue;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * Bean's definition information, such as class name and id
  *
  * @author CodeingBoy
- * @version 1
+ * @version 2
  */
 public interface BeanDefinition {
 
@@ -46,4 +47,11 @@ public interface BeanDefinition {
      * @return bean's properties
      */
     List<PropertyValue> getPropertyValues();
+
+    /**
+     * Get bean's constructor arguments
+     *
+     * @return an object representing constructor arguments
+     */
+    ConstructorArgument getConstructorArgument();
 }

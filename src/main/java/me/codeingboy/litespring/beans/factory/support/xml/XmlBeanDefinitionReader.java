@@ -4,9 +4,7 @@ import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.factory.config.RuntimeBeanReference;
 import me.codeingboy.litespring.beans.factory.config.TypedStringValue;
-import me.codeingboy.litespring.beans.support.BeanDefinitionRegistry;
-import me.codeingboy.litespring.beans.support.GenericBeanDefinition;
-import me.codeingboy.litespring.beans.support.PropertyValue;
+import me.codeingboy.litespring.beans.support.*;
 import me.codeingboy.litespring.core.io.Resource;
 import me.codeingboy.litespring.utils.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +42,8 @@ public class XmlBeanDefinitionReader {
     private final static String REF_ATTRIBUTE = "ref";
     private final static String VALUE_ATTRIBUTE = "value";
 
+    private final static String CONSTRUCTOR_ARG_ELEMENT = "constructor-arg";
+
     private List<BeanElement> beanElements = new ArrayList<>();
     private BeanDefinitionRegistry registry;
 
@@ -67,7 +67,7 @@ public class XmlBeanDefinitionReader {
             for (XmlBeanDefinitionReader.BeanElement element : beanElements) {
                 String scope = element.getScope();
                 List<PropertyValue> propertyValues = element.getPropertyValues();
-                BeanDefinition definition = new GenericBeanDefinition(element.getClassName(), scope, propertyValues);
+                BeanDefinition definition = new GenericBeanDefinition(element.getClassName(), scope, propertyValues, element.getConstructorArgument());
                 registry.registerBeanDefinition(element.getId(), definition);
             }
         } catch (FileNotFoundException | DocumentException e) {
@@ -103,8 +103,9 @@ public class XmlBeanDefinitionReader {
             }
 
             List<PropertyValue> propertyValues = parsePropertyElements(currentElement);
+            ConstructorArgument constructorArgument = parseConstructorArgsElement(currentElement);
 
-            BeanElement beanElement = new BeanElement(id, className, scope, propertyValues);
+            BeanElement beanElement = new BeanElement(id, className, scope, propertyValues, constructorArgument);
             beanElements.add(beanElement);
         }
     }
@@ -129,6 +130,23 @@ public class XmlBeanDefinitionReader {
         }
 
         return values;
+    }
+
+    private ConstructorArgument parseConstructorArgsElement(Element beanElement) {
+        Iterator<Element> elementIterator = beanElement.elementIterator(CONSTRUCTOR_ARG_ELEMENT);
+        ConstructorArgument argument = new ConstructorArgument();
+
+        while (elementIterator.hasNext()) {
+            Element constructorArgsElement = elementIterator.next();
+
+            Object value = parsePropertyValue(constructorArgsElement);
+
+            ValueHolder holder = new ValueHolder();
+            holder.setValue(value);
+            argument.addValueHolder(holder);
+        }
+
+        return argument;
     }
 
     private Object parsePropertyValue(Element propertyElement) {
@@ -156,6 +174,15 @@ public class XmlBeanDefinitionReader {
         private String className;
         private String scope;
         private List<PropertyValue> propertyValues;
+        private ConstructorArgument constructorArgument;
+
+        public BeanElement(String id, String className, String scope, List<PropertyValue> propertyValues, ConstructorArgument constructorArgument) {
+            this.id = id;
+            this.className = className;
+            this.scope = scope;
+            this.propertyValues = propertyValues;
+            this.constructorArgument = constructorArgument;
+        }
 
         public BeanElement(String id, String className, String scope, List<PropertyValue> propertyValues) {
             this.id = id;
@@ -200,6 +227,10 @@ public class XmlBeanDefinitionReader {
 
         public void setClassName(String className) {
             this.className = className;
+        }
+
+        public ConstructorArgument getConstructorArgument() {
+            return constructorArgument;
         }
     }
 

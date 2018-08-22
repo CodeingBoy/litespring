@@ -15,11 +15,13 @@ public class GenericBeanDefinition implements BeanDefinition {
     private String className;
     private String scope = SCOPE_DEFAULT;
     private List<PropertyValue> propertyValues;
+    private ConstructorArgument constructorArgument;
 
-    public GenericBeanDefinition(String className, String scope, List<PropertyValue> propertyValues) {
+    public GenericBeanDefinition(String className, String scope, List<PropertyValue> propertyValues, ConstructorArgument constructorArgument) {
         this.className = className;
         this.scope = scope;
         this.propertyValues = propertyValues;
+        this.constructorArgument = constructorArgument;
     }
 
     @Override
@@ -45,5 +47,10 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public List<PropertyValue> getPropertyValues() {
         return propertyValues;
+    }
+
+    @Override
+    public ConstructorArgument getConstructorArgument() {
+        return constructorArgument;
     }
 }

@@ -4,9 +4,12 @@ import me.codeingboy.litespring.beans.BeanDefinition;
 import me.codeingboy.litespring.beans.factory.BeanCreationException;
 import me.codeingboy.litespring.beans.factory.BeanDefinitionReadException;
 import me.codeingboy.litespring.beans.factory.config.RuntimeBeanReference;
+import me.codeingboy.litespring.beans.factory.config.TypedStringValue;
 import me.codeingboy.litespring.beans.factory.support.DefaultBeanFactory;
 import me.codeingboy.litespring.beans.factory.support.xml.XmlBeanDefinitionReader;
+import me.codeingboy.litespring.beans.support.ConstructorArgument;
 import me.codeingboy.litespring.beans.support.PropertyValue;
+import me.codeingboy.litespring.beans.support.ValueHolder;
 import me.codeingboy.litespring.core.io.ClasspathResource;
 import me.codeingboy.litespring.core.io.Resource;
 import me.codeingboy.litespring.services.PetStoreService;
@@ -127,17 +130,40 @@ public class DefaultBeanFactoryTest {
         assertEquals("me.codeingboy.litespring.services.PetStoreService", beanDefinition.getClassName());
 
         List<PropertyValue> propertyValueList = beanDefinition.getPropertyValues();
-        assertEquals(4, propertyValueList.size());
+        assertEquals(0, propertyValueList.size());
+    }
 
-        PropertyValue itemDaoValue = getPropertyValue(propertyValueList, "itemDao");
-        assertNotNull(itemDaoValue);
-        assertEquals("itemDao", itemDaoValue.getName());
-        assertTrue(itemDaoValue.getValue() instanceof RuntimeBeanReference);
+    @Test
+    public void beanConstructorTest() {
+        Resource resource = new ClasspathResource("petstore-v3.xml");
+        reader.registerBeanDefinitions(resource);
 
-        PropertyValue accountDaoValue = getPropertyValue(propertyValueList, "accountDao");
-        assertNotNull(accountDaoValue);
-        assertEquals("accountDao", accountDaoValue.getName());
-        assertTrue(accountDaoValue.getValue() instanceof RuntimeBeanReference);
+        BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PET_STORE_SERVICE);
+        assertEquals("me.codeingboy.litespring.services.PetStoreService", beanDefinition.getClassName());
+
+        ConstructorArgument constructorArgument = beanDefinition.getConstructorArgument();
+        List<ValueHolder> valueHolders = constructorArgument.getValueHolders();
+        assertEquals(4, valueHolders.size());
+
+        ValueHolder valueHolder1 = valueHolders.get(0);
+        assertTrue(valueHolder1.getValue() instanceof RuntimeBeanReference);
+        RuntimeBeanReference reference1 = (RuntimeBeanReference) valueHolder1.getValue();
+        assertEquals("accountDao", reference1.getBeanName());
+
+        ValueHolder valueHolder2 = valueHolders.get(1);
+        assertTrue(valueHolder2.getValue() instanceof RuntimeBeanReference);
+        RuntimeBeanReference reference2 = (RuntimeBeanReference) valueHolder2.getValue();
+        assertEquals("itemDao", reference2.getBeanName());
+
+        ValueHolder valueHolder3 = valueHolders.get(2);
+        assertTrue(valueHolder3.getValue() instanceof TypedStringValue);
+        TypedStringValue value3 = (TypedStringValue) valueHolder3.getValue();
+        assertEquals("CodeingBoy", value3.getValue());
+
+        ValueHolder valueHolder4 = valueHolders.get(3);
+        assertTrue(valueHolder4.getValue() instanceof TypedStringValue);
+        TypedStringValue value4 = (TypedStringValue) valueHolder4.getValue();
+        assertEquals("3", value4.getValue());
     }
 
     private PropertyValue getPropertyValue(List<PropertyValue> values, String propertyName) {
