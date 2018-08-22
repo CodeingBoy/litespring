@@ -39,7 +39,7 @@ public class DefaultBeanFactoryTest {
 
     @Test
     public void beanGetTest() {
-        Resource resource = new ClasspathResource("petstore-v2.xml");
+        Resource resource = new ClasspathResource("petstore-v3.xml");
         reader.registerBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PET_STORE_SERVICE);
@@ -59,7 +59,7 @@ public class DefaultBeanFactoryTest {
 
     @Test
     public void beanDefinitionNotExistsTest() {
-        Resource resource = new ClasspathResource("petstore-v2.xml");
+        Resource resource = new ClasspathResource("petstore-v3.xml");
 
         reader.registerBeanDefinitions(resource);
 
@@ -69,7 +69,7 @@ public class DefaultBeanFactoryTest {
 
     @Test(expected = BeanCreationException.class)
     public void notExistsBeanClassTest() {
-        Resource resource = new ClasspathResource("petstore-v2.xml");
+        Resource resource = new ClasspathResource("petstore-v3.xml");
         reader.registerBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition("invalidBean");
@@ -80,7 +80,7 @@ public class DefaultBeanFactoryTest {
 
     @Test
     public void singletonBeanTest() {
-        Resource resource = new ClasspathResource("petstore-v2.xml");
+        Resource resource = new ClasspathResource("petstore-v3.xml");
         reader.registerBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PET_STORE_SERVICE);
@@ -100,7 +100,7 @@ public class DefaultBeanFactoryTest {
 
     @Test
     public void prototypeTest() {
-        Resource resource = new ClasspathResource("petstore-v2.xml");
+        Resource resource = new ClasspathResource("petstore-v3.xml");
         reader.registerBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PROTOTYPE_BEAN);
@@ -120,7 +120,7 @@ public class DefaultBeanFactoryTest {
 
     @Test
     public void beanPropertyTest() {
-        Resource resource = new ClasspathResource("petstore-v2.xml");
+        Resource resource = new ClasspathResource("petstore-v3.xml");
         reader.registerBeanDefinitions(resource);
 
         BeanDefinition beanDefinition = factory.getBeanDefinition(BEAN_ID_PET_STORE_SERVICE);

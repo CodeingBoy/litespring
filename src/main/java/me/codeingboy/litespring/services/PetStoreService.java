@@ -15,6 +15,13 @@ public class PetStoreService {
     private String owner;
     private int version;
 
+    public PetStoreService(AccountDao accountDao, ItemDao itemDao, String owner, int version) {
+        this.accountDao = accountDao;
+        this.itemDao = itemDao;
+        this.owner = owner;
+        this.version = version;
+    }
+
     public String getOwner() {
         return owner;
     }

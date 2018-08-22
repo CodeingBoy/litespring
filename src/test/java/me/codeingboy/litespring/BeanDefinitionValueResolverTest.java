@@ -26,7 +26,7 @@ public class BeanDefinitionValueResolverTest {
     @Test
     public void runtimeBeanReferenceResolveTest() {
         DefaultBeanFactory factory = new DefaultBeanFactory();
-        Resource resource = new ClasspathResource("petstore-v2.xml");
+        Resource resource = new ClasspathResource("petstore-v3.xml");
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
         reader.registerBeanDefinitions(resource);
 

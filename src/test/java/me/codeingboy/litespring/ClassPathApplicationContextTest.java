@@ -18,7 +18,7 @@ public class ClassPathApplicationContextTest {
 
     @Test
     public void getBeanTest() {
-        ApplicationContext context = new ClassPathXmlApplicationContext("petstore-v2.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("petstore-v3.xml");
         PetStoreService petStoreService = (PetStoreService) context.getBean(BEAN_ID_PET_STORE_SERVICE);
         Assert.assertNotNull(petStoreService);
 
@@ -28,7 +28,7 @@ public class ClassPathApplicationContextTest {
         Assert.assertNotNull(petStoreService.getOwner());
         Assert.assertEquals("CodeingBoy", petStoreService.getOwner());
 
-        Assert.assertEquals(2, petStoreService.getVersion());
+        Assert.assertEquals(3, petStoreService.getVersion());
     }
 
 }
